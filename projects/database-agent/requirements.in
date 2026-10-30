@@ -1,0 +1,5 @@
+# 本节直接依赖；requirements.txt 记录经过测试的完整解析快照。
+httpx[socks]==0.28.1
+langchain-openai==1.0.1
+python-dotenv==1.2.1
+pytest==8.4.2

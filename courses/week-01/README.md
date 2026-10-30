@@ -7,11 +7,15 @@
 
 ### S1-01：直接调用模型 API 与 LangChain 的区别
 
+**完整课程：** [S1-01 中文讲解](s1-01-model-api-and-langchain.md) · [可运行项目](../../projects/database-agent/) · [学习进度](../../docs/learning-progress.md)
+
 **实践任务：** 编写直接 API 调用和 LangChain 调用两个最小版本，比较消息格式、抽象层和适用场景。
 
 **本节必须包含：** 术语中英对照、原理解释、可运行代码、执行链路、项目集成、测试、Summary 和 3–5 道面试题。
 
 ### S1-02：Message、Prompt、Token 与上下文窗口
+
+**完整课程：** [S1-02 中文讲解](s1-02-messages-prompt-context.md) · [多轮项目入口](../../projects/database-agent/app/chat_cli.py)
 
 **实践任务：** 观察不同消息角色如何影响请求；理解上下文长度、Token 预算和历史消息管理。
 

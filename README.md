@@ -14,6 +14,10 @@
 
 ## 学习方式
 
+**开始第一课：** [S1-01：直接调用模型 API 与 LangChain 的区别](courses/week-01/s1-01-model-api-and-langchain.md)。配套代码位于 [Database Agent 项目](projects/database-agent/)，学习和联调结果记录在 [学习进度](docs/learning-progress.md)。
+
+**继续第二课：** [S1-02：Message、Prompt、Token 与上下文窗口](courses/week-01/s1-02-messages-prompt-context.md)，加入多轮对话、完整轮次裁剪和服务报告的 Token 用量。
+
 采用“每学一个知识点，就写代码并逐步完善项目”的方式。每节课必须包含概念解释、可运行代码、执行链路分析、项目实践、测试练习、Summary 和 3–5 道面试题及参考答案。
 
 ## 12 周路线

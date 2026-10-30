@@ -16,3 +16,12 @@
 ---
 
 后续每完成一个重要模块，再增加一条记录。
+
+## ADR-001：S1-01 先比较原始 HTTP 与 LangChain 模型集成
+
+- **状态：** Accepted（课程实现选择；学习者掌握情况另行验收）。
+- **背景：** 需要理解底层协议，又要让代码能逐步演进为 Database Agent。
+- **决策：** 在 projects/database-agent 中提供相同输入/输出类型的两个模型调用函数，共用配置和消息，通过 CLI 选择实现。本节显式使用 Chat Completions、关闭自动重试，不接入数据库和 Agent 循环。
+- **备选方案：** 只用供应商 SDK；从 Responses API 起步；直接上 Agent 执行器。
+- **理由与取舍：** 同一协议便于观察两条路径的差异。原始 HTTP 需要手动解析；LangChain 增加依赖，不能隐藏供应商差异。OpenAI 对新项目建议尝试 Responses；本课选择 Chat Completions 用于协议教学和常见兼容接口对比，不代表后续只能使用此接口。
+- **后续验证：** 使用真实 LangChain/SDK 和 HTTPX MockTransport 验证请求、文本解析与异常；学习者本地完成真实模型联调。测试不能代替模型语义评测。后续服务化时再选择异步调用和客户端生命周期。
