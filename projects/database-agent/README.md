@@ -1,6 +1,6 @@
 # Database Agent：持续演进的课程项目
 
-当前阶段：**S1-01 模型接入层 + S1-02 多轮对话**。提供两个真实模型调用实现与一个 LangChain 多轮入口。单次 CLI 不保存历史；多轮 CLI 在当前进程保留有限轮次。当前没有数据库连接、SQL 执行、工具循环或历史持久化。
+当前阶段：**S1-01 模型接入层 + S1-02 多轮对话 + S1-03 流式输出与结构化输出**。提供两个真实模型调用实现与一个 LangChain 多轮入口。单次 CLI 不保存历史；多轮 CLI 在当前进程保留有限轮次。当前没有数据库连接、SQL 执行、工具循环或历史持久化。
 
 完整中文讲解：[S1-01 课程](../../courses/week-01/s1-01-model-api-and-langchain.md)。
 
@@ -19,6 +19,61 @@ macOS / Linux 用 `.venv/bin/python -m app.chat_cli --keep-turns 3`。输入问�
 `keep-turns` 只限制轮数，不是 Token 上限。输入包含 system、最多 N 轮历史和当前问题；成功后只保存最近 N 轮。Token 用量读取自服务返回值，缺失时显示未知。退出进程后历史清空；多个用户需要独立会话，不能共用一个全局列表。
 
 如果 Copy-Item 不适用于你的终端，可以直接在编辑器里复制 `.env.example` 并重命名为 `.env`；已有 `.env` 则保留原配置。
+
+## S1-03：Streaming 与 Structured Output
+
+完整课程：[S1-03 中文讲解](../../courses/week-01/S1-03-streaming-structured-output.md)。
+
+本节在原项目中增量增加流式调用、Pydantic 查询意图、FastAPI SSE / JSON 接口和离线测试。沿用现有虚拟环境与 `.env`，不要重新创建环境，也不要覆盖已有密钥配置。
+
+### 安装本节依赖
+
+在当前项目目录（`projects/database-agent`）执行：
+
+```powershell
+python -m pip install -r requirements-s1-03.txt
+```
+
+这是本节的直接依赖清单，不是完整 lock 文件；它可能升级当前虚拟环境中的 LangChain、OpenAI SDK、Pydantic 和 FastAPI 版本。原来的 `requirements.txt` 保留不变。
+
+### 命令行实验
+
+```powershell
+python -m app.lesson03 stream "用中文解释数据库索引，并举两个例子"
+python -m app.lesson03 intent "统计上个月订单数"
+python -m app.lesson03 intent "查一下订单"
+python -m app.lesson03 intent "统计上个月订单数" --method function_calling
+```
+
+`stream` 会逐段输出文本；`intent` 返回经过 Pydantic 校验的查询意图。若网关不支持 JSON Schema 但支持 Tool Calling，可显式试用 `--method function_calling`。代码不会在失败时自动切换方法。
+
+### FastAPI 接口
+
+```powershell
+python -m uvicorn app.lesson03_api:app --reload --host 127.0.0.1 --port 8000
+```
+
+打开 `http://127.0.0.1:8000/docs`，可调用 `POST /intent`；流式接口为 `POST /chat/stream`。可选终端客户端：
+
+```powershell
+python -m app.lesson03_client
+```
+
+### 离线测试
+
+```powershell
+python -m pytest -q tests/test_lesson03.py
+```
+
+测试使用 MockTransport，不调用真实模型、不消耗 API 额度。真实模型与网关能力仍需在本地用自己的配置验证。
+
+### 本节新增文件
+
+- `app/lesson03.py`：流式调用、结构化查询意图和 CLI。
+- `app/lesson03_api.py`：SSE 流式接口与 JSON 意图接口。
+- `app/lesson03_client.py`：可选的 SSE 终端客户端。
+- `tests/test_lesson03.py`：流式、Schema、异常与 API 测试。
+- `requirements-s1-03.txt`：本节增量直接依赖。
 
 ## 环境与安装
 
