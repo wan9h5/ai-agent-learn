@@ -40,3 +40,12 @@
 - 对“保存历史”和“本次发送上下文”的解释：
 - 仍然困惑的问题：
 - 下一节：S1-03 Streaming 与 Structured Output。
+
+## S1-03：Streaming 与 Structured Output
+
+- 教材与代码：已准备并同步至 GitHub；新增流式 CLI、结构化查询意图、FastAPI SSE / JSON 接口、可选终端客户端及离线测试。
+- 自动验证：课程讲义记录 9 项离线测试通过；本次同步只完成文件写入，没有在当前环境重新执行 pytest。
+- 真实服务联调：待学习者使用原有 `.env` 在本地验证；未使用真实密钥，也未调用真实模型。
+- 学习验收：待完成；教材与代码已准备不代表已经掌握。
+- 下一节：S2-01 System/User Message 与 Prompt Template。
+
