@@ -23,6 +23,8 @@
 
 ### S1-03：Streaming 与 Structured Output
 
+**完整课程：** [S1-03 中文讲解](S1-03-streaming-structured-output.md) · [CLI 实现](../../projects/database-agent/app/lesson03.py) · [FastAPI 接口](../../projects/database-agent/app/lesson03_api.py)
+
 **实践任务：** 实现流式响应，并使用结构化输出和校验模型返回的数据。
 
 **本节必须包含：** 术语中英对照、原理解释、可运行代码、执行链路、项目集成、测试、Summary 和 3–5 道面试题。
