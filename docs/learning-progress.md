@@ -45,7 +45,15 @@
 
 - 教材与代码：已准备并同步至 GitHub；新增流式 CLI、结构化查询意图、FastAPI SSE / JSON 接口、可选终端客户端及离线测试。
 - 自动验证：课程讲义记录 9 项离线测试通过；本次同步只完成文件写入，没有在当前环境重新执行 pytest。
-- 真实服务联调：待学习者使用原有 `.env` 在本地验证；未使用真实密钥，也未调用真实模型。
+- 真实服务联调：待学习者使用原有 \`.env\` 在本地验证；未使用真实密钥，也未调用真实模型。
 - 学习验收：待完成；教材与代码已准备不代表已经掌握。
 - 下一节：S2-01 System/User Message 与 Prompt Template。
 
+## S2-01：System Message、User Message 与 Prompt Template
+
+- 教材与代码：已准备并同步至 GitHub；新增 \`app/lesson04.py\`，包含 ChatPromptTemplate、动态变量、MessagesPlaceholder、历史消息转换与 CLI 预览/调用入口。
+- 测试：新增 \`tests/test_lesson04.py\`，覆盖角色分离、模板变量、历史插入、旧 system 过滤、非法角色、空输入和 MockTransport 请求内容。
+- 自动验证：GitHub 文件写入成功；当前执行环境没有检出项目工作区，因此未在本地重新运行 pytest。请在学习者本地运行文档中的测试命令。
+- 真实服务联调：待学习者使用原有 \`.env\` 执行 ask 命令；本节文件生成与测试不使用真实密钥，也不调用真实模型。
+- 学习验收：待完成；教材与代码已准备不代表已经掌握。
+- 下一节：S2-02 Pydantic、JSON Schema 与结构化输出校验。
