@@ -14,11 +14,13 @@
 
 ## 学习方式
 
-**开始第一课：** [S1-01：直接调用模型 API 与 LangChain 的区别](courses/week-01/s1-01-model-api-and-langchain.md)。配套代码位于 [Database Agent 项目](projects/database-agent/)，学习和联调结果记录在 [学习进度](docs/learning-progress.md)。
+**第一课：** [S1-01：直接调用模型 API 与 LangChain 的区别](courses/week-01/s1-01-model-api-and-langchain.md)。配套代码位于 [Database Agent 项目](projects/database-agent/)。
 
-**继续第二课：** [S1-02：Message、Prompt、Token 与上下文窗口](courses/week-01/s1-02-messages-prompt-context.md)，加入多轮对话、完整轮次裁剪和服务报告的 Token 用量。
+**第二课：** [S1-02：Message、Prompt、Token 与上下文窗口](courses/week-01/s1-02-messages-prompt-context.md)，加入多轮对话、完整轮次裁剪和服务报告的 Token 用量。
 
-**第三节课：** [S1-03：Streaming 与 Structured Output](courses/week-01/S1-03-streaming-structured-output.md)，新增流式输出、结构化查询意图提取与 FastAPI 接口。
+**第三课：** [S1-03：Streaming 与 Structured Output](courses/week-01/S1-03-streaming-structured-output.md)，新增流式输出、结构化查询意图提取与 FastAPI 接口。
+
+**第四课：** [S2-01：System Message、User Message 与 Prompt Template](courses/week-02/S2-01-system-user-prompt-template.md)，新增可复用聊天模板、动态变量、历史消息占位符与离线测试。
 
 采用“每学一个知识点，就写代码并逐步完善项目”的方式。每节课必须包含概念解释、可运行代码、执行链路分析、项目实践、测试练习、Summary 和 3–5 道面试题及参考答案。
 
@@ -48,14 +50,14 @@
 
 ## 文件导航
 
-- `docs/learning-methods.md`：学习方法
-- `docs/teaching-principles.md`：教学原则与每节课标准
-- `docs/technical-principles.md`：技术选型与工程原则
-- `docs/projects.md`：项目规划
-- `docs/interview-plan.md`：面试学习要求
-- `courses/00-roadmap.md`：完整课程安排
-- `courses/lesson-template.md`：每节课模板
-- `courses/week-01/` 至 `courses/week-12/`：每周课程目标与 3 节课安排
+- \`docs/learning-methods.md\`：学习方法
+- \`docs/teaching-principles.md\`：教学原则与每节课标准
+- \`docs/technical-principles.md\`：技术选型与工程原则
+- \`docs/projects.md\`：项目规划
+- \`docs/interview-plan.md\`：面试学习要求
+- \`courses/00-roadmap.md\`：完整课程安排
+- \`courses/lesson-template.md\`：每节课模板
+- \`courses/week-01/\` 至 \`courses/week-12/\`：每周课程目标与 3 节课安排
 
 ## 重要约定
 
