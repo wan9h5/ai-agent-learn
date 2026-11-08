@@ -45,15 +45,25 @@
 
 - 教材与代码：已准备并同步至 GitHub；新增流式 CLI、结构化查询意图、FastAPI SSE / JSON 接口、可选终端客户端及离线测试。
 - 自动验证：课程讲义记录 9 项离线测试通过；本次同步只完成文件写入，没有在当前环境重新执行 pytest。
-- 真实服务联调：待学习者使用原有 \`.env\` 在本地验证；未使用真实密钥，也未调用真实模型。
+- 真实服务联调：待学习者使用原有 .env 在本地验证；未使用真实密钥，也未调用真实模型。
 - 学习验收：待完成；教材与代码已准备不代表已经掌握。
 - 下一节：S2-01 System/User Message 与 Prompt Template。
 
 ## S2-01：System Message、User Message 与 Prompt Template
 
-- 教材与代码：已准备并同步至 GitHub；新增 \`app/lesson04.py\`，包含 ChatPromptTemplate、动态变量、MessagesPlaceholder、历史消息转换与 CLI 预览/调用入口。
-- 测试：新增 \`tests/test_lesson04.py\`，覆盖角色分离、模板变量、历史插入、旧 system 过滤、非法角色、空输入和 MockTransport 请求内容。
+- 教材与代码：已准备并同步至 GitHub；新增 app/lesson04.py，包含 ChatPromptTemplate、动态变量、MessagesPlaceholder、历史消息转换与 CLI 预览/调用入口。
+- 测试：新增 tests/test_lesson04.py，覆盖角色分离、模板变量、历史插入、旧 system 过滤、非法角色、空输入和 MockTransport 请求内容。
 - 自动验证：GitHub 文件写入成功；当前执行环境没有检出项目工作区，因此未在本地重新运行 pytest。请在学习者本地运行文档中的测试命令。
-- 真实服务联调：待学习者使用原有 \`.env\` 执行 ask 命令；本节文件生成与测试不使用真实密钥，也不调用真实模型。
+- 真实服务联调：待学习者使用原有 .env 执行 ask 命令；本节文件生成与测试不使用真实密钥，也不调用真实模型。
 - 学习验收：待完成；教材与代码已准备不代表已经掌握。
 - 下一节：S2-02 Pydantic、JSON Schema 与结构化输出校验。
+
+## S2-02：Pydantic、JSON Schema 与结构化输出校验
+
+- 教材与代码：本次新增 S2-02 讲义、app/lesson05.py 和 tests/test_lesson05.py；继续复用 S1-03 的 build_model() 与原有 .env，不新增依赖。
+- 功能：新增嵌套 FilterCondition、DatabaseQueryIntent、JSON Schema 生成、strict Structured Output、字段校验和跨字段业务校验。
+- 测试：新增离线测试，覆盖合法对象、Schema 必填字段、缺字段、错误类型、多余字段、嵌套字段、业务约束、MockTransport 模型调用和空输入。
+- 自动验证：代码与测试已准备并同步；本次没有在当前执行环境运行 pytest，不能据此标记测试通过。请在学习者本地执行课程文档中的测试命令。
+- 真实服务联调：待学习者使用原有 .env 执行 extract 命令；未使用真实密钥，也未调用真实模型。
+- 学习验收：待完成；教材与代码已准备不代表已经掌握。
+- 下一节：S2-03 超时、重试、错误分类与模型适配。

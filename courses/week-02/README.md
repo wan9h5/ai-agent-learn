@@ -7,21 +7,29 @@
 
 ### S2-01：System/User Message 与 Prompt Template
 
+<badge>已完成代码与讲解准备</badge>
+
 **实践任务：** 将固定提示词改造成可复用模板，并测试不同输入。
 
-**本节必须包含：** 术语中英对照、原理解释、可运行代码、执行链路、项目集成、测试、Summary 和 3–5 道面试题。
+课程文档：[S2-01：System Message、User Message 与 Prompt Template](S2-01-system-user-prompt-template.md)。
 
-### S2-02：Pydantic、JSON Schema 与结构化校验
+### S2-02：Pydantic、JSON Schema 与结构化输出校验
 
-**实践任务：** 定义业务输出模型，处理缺字段、类型错误和不符合约束的输出。
+<badge>本次新增</badge>
 
-**本节必须包含：** 术语中英对照、原理解释、可运行代码、执行链路、项目集成、测试、Summary 和 3–5 道面试题。
+**实践任务：** 定义嵌套业务输出模型，生成 JSON Schema，处理缺字段、类型错误、多余字段和跨字段业务约束。
+
+课程文档：[S2-02：Pydantic、JSON Schema 与结构化输出校验](S2-02-pydantic-json-schema-structured-output.md)。
+
+配套代码：
+- projects/database-agent/app/lesson05.py
+- projects/database-agent/tests/test_lesson05.py
 
 ### S2-03：超时、重试、错误分类与模型适配
 
-**实践任务：** 为模型调用增加超时、有限重试、统一错误格式和供应商配置。
+**下一节：** 为模型调用增加超时、有限重试、统一错误格式和供应商配置。
 
-**本节必须包含：** 术语中英对照、原理解释、可运行代码、执行链路、项目集成、测试、Summary 和 3–5 道面试题。
+**实践任务：** 把模型调用中的网络错误、超时、限流、模型拒绝和结构化解析失败区分开，避免对所有错误盲目重试。
 
 ## 本周验收
 - 三节课的代码均能按文档运行。

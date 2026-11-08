@@ -17,6 +17,9 @@
 - 直接调用模型 API 与使用 LangChain 有什么区别？
 - Token 与上下文窗口是什么？
 - 为什么结构化输出仍然需要校验？
+- Pydantic 与 JSON Schema 有什么区别？
+- model_json_schema()、with_structured_output() 和 invoke() 分别做什么？
+- field_validator 与 model_validator 分别适合什么场景？
 - 如何处理流式响应、超时和模型输出异常？
 
 ### Tool Calling

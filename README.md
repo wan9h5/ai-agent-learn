@@ -22,6 +22,8 @@
 
 **第四课：** [S2-01：System Message、User Message 与 Prompt Template](courses/week-02/S2-01-system-user-prompt-template.md)，新增可复用聊天模板、动态变量、历史消息占位符与离线测试。
 
+**第五课：** [S2-02：Pydantic、JSON Schema 与结构化输出校验](courses/week-02/S2-02-pydantic-json-schema-structured-output.md)，新增嵌套业务模型、JSON Schema、严格结构化输出和字段/跨字段校验。
+
 采用“每学一个知识点，就写代码并逐步完善项目”的方式。每节课必须包含概念解释、可运行代码、执行链路分析、项目实践、测试练习、Summary 和 3–5 道面试题及参考答案。
 
 ## 12 周路线
@@ -50,18 +52,18 @@
 
 ## 文件导航
 
-- \`docs/learning-methods.md\`：学习方法
-- \`docs/teaching-principles.md\`：教学原则与每节课标准
-- \`docs/technical-principles.md\`：技术选型与工程原则
-- \`docs/projects.md\`：项目规划
-- \`docs/interview-plan.md\`：面试学习要求
-- \`courses/00-roadmap.md\`：完整课程安排
-- \`courses/lesson-template.md\`：每节课模板
-- \`courses/week-01/\` 至 \`courses/week-12/\`：每周课程目标与 3 节课安排
+- docs/learning-methods.md：学习方法
+- docs/teaching-principles.md：教学原则与每节课标准
+- docs/technical-principles.md：技术选型与工程原则
+- docs/projects.md：项目规划
+- docs/interview-plan.md：面试学习要求
+- courses/00-roadmap.md：完整课程安排
+- courses/lesson-template.md：每节课模板
+- courses/week-01/ 至 courses/week-12/：每周课程目标与 3 节课安排
 
 ## 重要约定
 
-- 课程用中文讲解，英文术语附中文翻译。
+- 课程用中文讲解，英文术语附中文解释。
 - 示例优先使用真实、可运行的工程代码，不以伪代码代替核心实现。
 - API Key、数据库凭据等通过环境变量配置，不写入代码仓库。
 - 每一阶段完成后更新项目代码、README、学习进度和面试清单。
