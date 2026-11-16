@@ -1,13 +1,70 @@
 # Database Agent：持续演进的课程项目
 
-当前阶段：**S1-01 模型接入层 + S1-02 多轮对话 + S1-03 流式输出与结构化输出 + S2-01 Prompt Template + S2-02 结构化输出校验**。提供真实模型调用、多轮历史、流式输出、结构化查询意图、可复用提示词模板和经过 Pydantic 校验的业务对象。当前没有数据库连接、SQL 执行或工具循环。
+当前阶段：**S1-01 模型接入层 + S1-02 多轮对话 + S1-03 流式输出与结构化输出 + S2-01 Prompt Template + S2-02 结构化输出校验 + S2-03 模型调用可靠性**。
 
-课程入口：
+项目提供真实模型调用、多轮历史、流式输出、结构化查询意图、可复用提示词模板、Pydantic 校验、有限重试、统一错误格式和模型适配层。当前没有数据库连接、SQL 执行或工具循环。
+
+## 课程入口
+
 - [S1-01 模型 API 与 LangChain](../../courses/week-01/s1-01-model-api-and-langchain.md)
 - [S1-02 Message、Prompt、Token 与上下文](../../courses/week-01/s1-02-messages-prompt-context.md)
 - [S1-03 Streaming 与 Structured Output](../../courses/week-01/S1-03-streaming-structured-output.md)
 - [S2-01 System/User Message 与 Prompt Template](../../courses/week-02/S2-01-system-user-prompt-template.md)
 - [S2-02 Pydantic、JSON Schema 与结构化输出校验](../../courses/week-02/S2-02-pydantic-json-schema-structured-output.md)
+- [S2-03 超时、重试、错误分类与模型适配](../../courses/week-02/S2-03-timeout-retry-error-handling-model-adapter.md)
+
+## S2-03：模型调用可靠性
+
+本节新增：
+
+- app/lesson06.py：读取现有 Settings，构建 ChatOpenAI；实现 ErrorCategory、classify_error、RetryPolicy、指数退避、Jitter、QueryIntentModelAdapter、LangChainQueryIntentAdapter 和 ReliableQueryService。
+- app/lesson06_api.py：FastAPI 结构化意图接口，统一异常状态码和错误响应。
+- tests/test_lesson06.py：覆盖错误分类、可重试决策、最大尝试次数、退避、配置、结构化输出、API 正常响应与错误响应。
+
+### 配置说明
+
+本节继续使用原有项目配置，不要求重新配置密钥：
+
+- LLM_API_KEY
+- LLM_MODEL
+- LLM_BASE_URL
+- LLM_TIMEOUT_SECONDS
+- LLM_MAX_COMPLETION_TOKENS
+
+代码通过 app/config.py 的 Settings.from_env() 读取配置，并加载本目录下原有 .env。不要覆盖已有 .env，也不要把真实密钥提交到 GitHub。
+
+LLM_BASE_URL 需要是 OpenAI 兼容的 API 基础地址。若网关采用自定义协议，需要实现自己的 Model Adapter。
+
+### CLI 调用
+
+在本项目目录执行：
+
+~~~powershell
+.\.venv\Scripts\python.exe -m app.lesson06 "统计上个月订单数"
+.\.venv\Scripts\python.exe -m app.lesson06 "统计上个月订单数" --max-attempts 1
+~~~
+
+max-attempts 包含第一次请求；设置为 1 就是不重试。
+
+### 离线测试
+
+~~~powershell
+.\.venv\Scripts\python.exe -m pytest -q tests/test_lesson06.py
+~~~
+
+### FastAPI
+
+~~~powershell
+.\.venv\Scripts\python.exe -m uvicorn app.lesson06_api:app --reload --host 127.0.0.1 --port 8001
+~~~
+
+另开 PowerShell 窗口：
+
+~~~powershell
+Invoke-RestMethod -Uri "http://127.0.0.1:8001/intent" -Method Post -ContentType "application/json" -Body '{"message":"统计上个月订单数"}'
+~~~
+
+离线测试通过 MockTransport 和测试适配器替换网络，不使用真实密钥、不访问真实模型网关，也不会产生模型调用费用。
 
 ## S2-02：Pydantic 与结构化输出校验
 
@@ -20,15 +77,13 @@
 在本项目目录执行：
 
 ~~~powershell
-.\\.venv\\Scripts\\python.exe -m app.lesson05 schema
-.\\.venv\\Scripts\\python.exe -m app.lesson05 validate '{"action":"query","metric":"订单数","time_range":"上个月","filters":[],"questions":[]}'
-.\\.venv\\Scripts\\python.exe -m app.lesson05 extract "统计上个月订单数"
-.\\.venv\\Scripts\\python.exe -m pytest -q tests/test_lesson05.py
+.\.venv\Scripts\python.exe -m app.lesson05 schema
+.\.venv\Scripts\python.exe -m app.lesson05 validate '{"action":"query","metric":"订单数","time_range":"上个月","filters":[],"questions":[]}'
+.\.venv\Scripts\python.exe -m app.lesson05 extract "统计上个月订单数"
+.\.venv\Scripts\python.exe -m pytest -q tests/test_lesson05.py
 ~~~
 
-schema 和 validate 不调用模型；extract 才会使用原有 .env 发起真实模型请求。模型供应商和模型 ID 必须支持当前使用的 JSON Schema Structured Output。
-
-完整讲解、执行链路、练习与面试题见 S2-02 课程文档。
+schema 和 validate 不调用模型；extract 才会使用原有 .env 发起真实模型请求。
 
 ## S2-01：Prompt Template
 
@@ -36,16 +91,16 @@ schema 和 validate 不调用模型；extract 才会使用原有 .env 发起真�
 - app/lesson04.py：System/User 模板、动态变量、可选历史消息、Conversation 历史转换和 CLI。
 - tests/test_lesson04.py：模板、角色、历史和模型请求的离线测试。
 
-无需新增依赖，沿用原来的虚拟环境与 .env。在本项目目录执行：
+在本项目目录执行：
 
 ~~~powershell
-.\\.venv\\Scripts\\python.exe -m app.lesson04 preview "统计上个月订单数"
-.\\.venv\\Scripts\\python.exe -m app.lesson04 preview "统计上个月订单数" --database-context "MySQL 8.0；orders(id, created_at, amount)"
-.\\.venv\\Scripts\\python.exe -m app.lesson04 ask "统计上个月订单数"
-.\\.venv\\Scripts\\python.exe -m pytest -q tests/test_lesson04.py
+.\.venv\Scripts\python.exe -m app.lesson04 preview "统计上个月订单数"
+.\.venv\Scripts\python.exe -m app.lesson04 preview "统计上个月订单数" --database-context "MySQL 8.0；orders(id, created_at, amount)"
+.\.venv\Scripts\python.exe -m app.lesson04 ask "统计上个月订单数"
+.\.venv\Scripts\python.exe -m pytest -q tests/test_lesson04.py
 ~~~
 
-preview 只格式化并显示最终消息，不调用模型；ask 才会使用原来的模型配置发起请求。完整讲解、执行链路和练习见 S2-01 课程文档。
+preview 只格式化并显示最终消息，不调用模型；ask 才会使用原来的模型配置发起请求。
 
 ## S1-03：Streaming 与 Structured Output
 
@@ -84,7 +139,7 @@ python -m pytest -q tests/test_lesson03.py
 ## S1-02 多轮对话
 
 ~~~powershell
-.\\.venv\\Scripts\\python.exe -m app.chat_cli --keep-turns 3
+.\.venv\Scripts\python.exe -m app.chat_cli --keep-turns 3
 ~~~
 
 ## 环境与安装
@@ -94,7 +149,7 @@ python -m pytest -q tests/test_lesson03.py
 ~~~powershell
 cd projects/database-agent
 python -m venv .venv
-.\\.venv\\Scripts\\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
 Copy-Item .env.example .env
 ~~~
 

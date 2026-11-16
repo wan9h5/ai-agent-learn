@@ -60,10 +60,21 @@
 
 ## S2-02：Pydantic、JSON Schema 与结构化输出校验
 
-- 教材与代码：本次新增 S2-02 讲义、app/lesson05.py 和 tests/test_lesson05.py；继续复用 S1-03 的 build_model() 与原有 .env，不新增依赖。
+- 教材与代码：新增 S2-02 讲义、app/lesson05.py 和 tests/test_lesson05.py；继续复用 S1-03 的 build_model() 与原有 .env，不新增依赖。
 - 功能：新增嵌套 FilterCondition、DatabaseQueryIntent、JSON Schema 生成、strict Structured Output、字段校验和跨字段业务校验。
-- 测试：新增离线测试，覆盖合法对象、Schema 必填字段、缺字段、错误类型、多余字段、嵌套字段、业务约束、MockTransport 模型调用和空输入。
-- 自动验证：代码与测试已准备并同步；本次没有在当前执行环境运行 pytest，不能据此标记测试通过。请在学习者本地执行课程文档中的测试命令。
+- 测试：覆盖合法对象、Schema 必填字段、缺字段、错误类型、多余字段、嵌套字段、业务约束、MockTransport 模型调用和空输入。
+- 自动验证：之前代码与测试已同步；需要在学习者本地运行 pytest，不能仅凭教材生成标记测试通过。
 - 真实服务联调：待学习者使用原有 .env 执行 extract 命令；未使用真实密钥，也未调用真实模型。
 - 学习验收：待完成；教材与代码已准备不代表已经掌握。
 - 下一节：S2-03 超时、重试、错误分类与模型适配。
+
+## S2-03：超时、重试、错误分类与模型适配
+
+- 教材与代码：新增 S2-03 讲义、app/lesson06.py、app/lesson06_api.py 和 tests/test_lesson06.py。
+- 配置：复用 app/config.py 的 Settings.from_env()，从原有 .env 读取 LLM_API_KEY、LLM_MODEL、LLM_BASE_URL、LLM_TIMEOUT_SECONDS 和 LLM_MAX_COMPLETION_TOKENS；不新增密钥，不覆盖 .env。
+- 功能：新增统一错误分类、有限重试、指数退避、随机抖动、LangChain 模型适配器、ReliableQueryService 和 FastAPI 统一错误响应。
+- 测试：覆盖超时、连接错误、429、5xx、认证错误、请求错误、结构化校验错误、最大尝试次数、退避、配置复用和 API 错误格式。
+- 自动验证：本次通过 GitHub 文件提交更新教材与代码；当前没有在学习者本地运行 pytest，因此测试结果待本地确认。
+- 真实服务联调：待学习者在原有 .env 下运行 CLI 或 FastAPI；本次没有读取或提交真实密钥，也没有调用真实模型。
+- 学习验收：待完成；教材与代码已准备不代表已经掌握。
+- 下一节：第三周 S3-01 Function Calling / Tool Calling 的执行机制。

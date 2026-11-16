@@ -24,6 +24,8 @@
 
 **第五课：** [S2-02：Pydantic、JSON Schema 与结构化输出校验](courses/week-02/S2-02-pydantic-json-schema-structured-output.md)，新增嵌套业务模型、JSON Schema、严格结构化输出和字段/跨字段校验。
 
+**第六课：** [S2-03：超时、重试、错误分类与模型适配](courses/week-02/S2-03-timeout-retry-error-handling-model-adapter.md)，新增有限重试、指数退避、错误分类、模型适配层和统一 API 错误响应。
+
 采用“每学一个知识点，就写代码并逐步完善项目”的方式。每节课必须包含概念解释、可运行代码、执行链路分析、项目实践、测试练习、Summary 和 3–5 道面试题及参考答案。
 
 ## 12 周路线

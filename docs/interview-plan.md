@@ -21,6 +21,11 @@
 - model_json_schema()、with_structured_output() 和 invoke() 分别做什么？
 - field_validator 与 model_validator 分别适合什么场景？
 - 如何处理流式响应、超时和模型输出异常？
+- 为什么不能对所有模型调用异常进行重试？
+- 指数退避和随机抖动分别解决什么问题？
+- 单次 Timeout 与整个业务请求的 Deadline 有什么区别？
+- SDK 重试与应用层重试叠加会产生什么问题？
+- Model Adapter 如何降低模型供应商耦合？
 
 ### Tool Calling
 - Tool Calling 的完整执行链路是什么？
