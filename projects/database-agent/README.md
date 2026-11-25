@@ -1,160 +1,34 @@
 # Database Agent：持续演进的课程项目
 
-当前阶段：**S1-01 模型接入层 + S1-02 多轮对话 + S1-03 流式输出与结构化输出 + S2-01 Prompt Template + S2-02 结构化输出校验 + S2-03 模型调用可靠性**。
+当前阶段：**S1-01 至 S2-03 已完成；S3-01 Function Calling / Tool Calling 代码与课程文档已加入，等待本地运行验收。**
 
-项目提供真实模型调用、多轮历史、流式输出、结构化查询意图、可复用提示词模板、Pydantic 校验、有限重试、统一错误格式和模型适配层。当前没有数据库连接、SQL 执行或工具循环。
+项目目前提供真实模型调用、多轮历史、流式输出、结构化查询意图、Prompt Template、Pydantic 校验、有限重试、模型适配，以及单轮 Tool Calling 演示。当前尚未连接真实数据库，也没有执行 SQL。
 
-## 课程入口
+## S3-01：Function Calling / Tool Calling
 
-- [S1-01 模型 API 与 LangChain](../../courses/week-01/s1-01-model-api-and-langchain.md)
-- [S1-02 Message、Prompt、Token 与上下文](../../courses/week-01/s1-02-messages-prompt-context.md)
-- [S1-03 Streaming 与 Structured Output](../../courses/week-01/S1-03-streaming-structured-output.md)
-- [S2-01 System/User Message 与 Prompt Template](../../courses/week-02/S2-01-system-user-prompt-template.md)
-- [S2-02 Pydantic、JSON Schema 与结构化输出校验](../../courses/week-02/S2-02-pydantic-json-schema-structured-output.md)
-- [S2-03 超时、重试、错误分类与模型适配](../../courses/week-02/S2-03-timeout-retry-error-handling-model-adapter.md)
+课程文档：[S3-01 Function Calling / Tool Calling 执行机制](../../courses/week-03/S3-01-function-calling.md)
 
-## S2-03：模型调用可靠性
+新增文件：
+- `app/lesson07.py`：定义指标查询工具、绑定工具、解析模型工具调用请求、通过白名单执行工具、构造 ToolMessage 并将结果交还模型。
+- `tests/test_lesson07.py`：覆盖工具结果、未知工具、tool_call_id 关联、完整工具调用链、直接回答和空输入。
 
-本节新增：
+### 运行示例
 
-- app/lesson06.py：读取现有 Settings，构建 ChatOpenAI；实现 ErrorCategory、classify_error、RetryPolicy、指数退避、Jitter、QueryIntentModelAdapter、LangChainQueryIntentAdapter 和 ReliableQueryService。
-- app/lesson06_api.py：FastAPI 结构化意图接口，统一异常状态码和错误响应。
-- tests/test_lesson06.py：覆盖错误分类、可重试决策、最大尝试次数、退避、配置、结构化输出、API 正常响应与错误响应。
-
-### 配置说明
-
-本节继续使用原有项目配置，不要求重新配置密钥：
-
-- LLM_API_KEY
-- LLM_MODEL
-- LLM_BASE_URL
-- LLM_TIMEOUT_SECONDS
-- LLM_MAX_COMPLETION_TOKENS
-
-代码通过 app/config.py 的 Settings.from_env() 读取配置，并加载本目录下原有 .env。不要覆盖已有 .env，也不要把真实密钥提交到 GitHub。
-
-LLM_BASE_URL 需要是 OpenAI 兼容的 API 基础地址。若网关采用自定义协议，需要实现自己的 Model Adapter。
-
-### CLI 调用
-
-在本项目目录执行：
+在 `projects/database-agent` 目录执行：
 
 ~~~powershell
-.\.venv\Scripts\python.exe -m app.lesson06 "统计上个月订单数"
-.\.venv\Scripts\python.exe -m app.lesson06 "统计上个月订单数" --max-attempts 1
-~~~
-
-max-attempts 包含第一次请求；设置为 1 就是不重试。
-
-### 离线测试
-
-~~~powershell
-.\.venv\Scripts\python.exe -m pytest -q tests/test_lesson06.py
-~~~
-
-### FastAPI
-
-~~~powershell
-.\.venv\Scripts\python.exe -m uvicorn app.lesson06_api:app --reload --host 127.0.0.1 --port 8001
-~~~
-
-另开 PowerShell 窗口：
-
-~~~powershell
-Invoke-RestMethod -Uri "http://127.0.0.1:8001/intent" -Method Post -ContentType "application/json" -Body '{"message":"统计上个月订单数"}'
-~~~
-
-离线测试通过 MockTransport 和测试适配器替换网络，不使用真实密钥、不访问真实模型网关，也不会产生模型调用费用。
-
-## S2-02：Pydantic 与结构化输出校验
-
-本节新增：
-- app/lesson05.py：嵌套 FilterCondition、DatabaseQueryIntent、JSON Schema 生成、strict Structured Output、字段校验、跨字段业务校验和 CLI。
-- tests/test_lesson05.py：Schema、缺字段、错误类型、多余字段、嵌套对象、业务约束和 MockTransport 模型调用的离线测试。
-
-无需新增依赖，继续复用原来的虚拟环境、.env 和 app/lesson03.py 中的 build_model()。
-
-在本项目目录执行：
-
-~~~powershell
-.\.venv\Scripts\python.exe -m app.lesson05 schema
-.\.venv\Scripts\python.exe -m app.lesson05 validate '{"action":"query","metric":"订单数","time_range":"上个月","filters":[],"questions":[]}'
-.\.venv\Scripts\python.exe -m app.lesson05 extract "统计上个月订单数"
-.\.venv\Scripts\python.exe -m pytest -q tests/test_lesson05.py
-~~~
-
-schema 和 validate 不调用模型；extract 才会使用原有 .env 发起真实模型请求。
-
-## S2-01：Prompt Template
-
-本节新增：
-- app/lesson04.py：System/User 模板、动态变量、可选历史消息、Conversation 历史转换和 CLI。
-- tests/test_lesson04.py：模板、角色、历史和模型请求的离线测试。
-
-在本项目目录执行：
-
-~~~powershell
-.\.venv\Scripts\python.exe -m app.lesson04 preview "统计上个月订单数"
-.\.venv\Scripts\python.exe -m app.lesson04 preview "统计上个月订单数" --database-context "MySQL 8.0；orders(id, created_at, amount)"
-.\.venv\Scripts\python.exe -m app.lesson04 ask "统计上个月订单数"
-.\.venv\Scripts\python.exe -m pytest -q tests/test_lesson04.py
-~~~
-
-preview 只格式化并显示最终消息，不调用模型；ask 才会使用原来的模型配置发起请求。
-
-## S1-03：Streaming 与 Structured Output
-
-完整课程：[S1-03 中文讲解](../../courses/week-01/S1-03-streaming-structured-output.md)。
-
-本节在原项目中增量增加流式调用、Pydantic 查询意图、FastAPI SSE / JSON 接口和离线测试。沿用现有虚拟环境与 .env，不要重新创建环境，也不要覆盖已有密钥配置。
-
-### 安装本节依赖
-
-在当前项目目录执行：
-
-~~~powershell
-python -m pip install -r requirements-s1-03.txt
-~~~
-
-### 命令行实验
-
-~~~powershell
-python -m app.lesson03 stream "用中文解释数据库索引，并举两个例子"
-python -m app.lesson03 intent "统计上个月订单数"
-python -m app.lesson03 intent "查一下订单"
-~~~
-
-### FastAPI 接口
-
-~~~powershell
-python -m uvicorn app.lesson03_api:app --reload --host 127.0.0.1 --port 8000
+.\.venv\Scripts\python.exe -m app.lesson07 "查询订单数的定义和计算口径"
 ~~~
 
 ### 离线测试
 
 ~~~powershell
-python -m pytest -q tests/test_lesson03.py
+.\.venv\Scripts\python.exe -m pytest -q tests/test_lesson07.py
 ~~~
 
-## S1-02 多轮对话
+测试使用 FakeModel，不访问真实模型网关。CLI 示例会调用现有 `.env` 配置的模型。
 
-~~~powershell
-.\.venv\Scripts\python.exe -m app.chat_cli --keep-turns 3
-~~~
+本节工具 `lookup_metric_definition` 查询的是项目内置指标目录，不是数据库查询工具，不会连接数据库或执行 SQL。当前实现只演示一轮工具调用；Agent 循环和终止条件安排在 S3-03。
 
-## 环境与安装
+---
 
-建议使用 Python 3.12。首次运行时在仓库根目录进入本项目：
-
-~~~powershell
-cd projects/database-agent
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-Copy-Item .env.example .env
-~~~
-
-编辑 .env：填写自己的 API Key、模型 ID 和服务基础地址。不要把密钥提交到 Git。已有 .env 时不要覆盖。
-
-## 当前验证边界
-
-自动测试通过 MockTransport 替换网络响应，不会使用真实模型密钥或产生模型调用费用。真实服务联调由学习者在本地完成后记录。
